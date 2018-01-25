@@ -1,0 +1,6 @@
+# Directories 👊
+.idea/
+node_modules/
+
+# Files 👊
+yarn.lock

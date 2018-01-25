@@ -1,0 +1,14 @@
+{
+  "name": "todo-fist",
+  "version": "1.0.0",
+  "description": "Take a 👊 each time you have done a task.",
+  "main": "index.js",
+  "author": "Davide Caruso <davide.caruso93@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "^4.0.0",
+    "http": "^0.0.0",
+    "url": "^0.11.0",
+    "util": "^0.10.3"
+  }
+}
