@@ -5,6 +5,9 @@
   "main": "index.js",
   "author": "Davide Caruso <davide.caruso93@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "server:run": "node public/index.js"
+  },
   "dependencies": {
     "bootstrap": "^4.0.0",
     "http": "^0.0.0",

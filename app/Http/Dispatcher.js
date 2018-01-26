@@ -2,6 +2,7 @@ let routes = require("./routes");
 
 class Dispatcher {
     constructor() {
+        this.controllers = [];
         if (!this.instance) {
             this.instance = this;
         }
@@ -18,7 +19,6 @@ class Dispatcher {
         }
         args = [response, args];
         if (Object.keys(routes).indexOf(action) !== -1) {
-            console.log(routes[action]);
             this.get(routes[action], args)
         } else {
             this.get('Controller@pageNotFound', [response]);
@@ -27,16 +27,14 @@ class Dispatcher {
 
     get(action, args) {
         try {
-            let [isStatic, char] = action.indexOf("::") !== -1 ? [true, "::"] : [false, "@"];
-            let splitted = action.split(char);
+            let splitted = action.split("@");
             if (splitted.length === 2) {
                 let [controllerName, methodName] = splitted;
-                let controller = require(`${App.APP_PATH}Http/Controllers/${controllerName}`);
-                if (isStatic) {
-                    (controller.constructor)[methodName](...args);
-                } else {
-                    controller[methodName](...args);
+                if (this.controllers.indexOf(controllerName) === -1) {
+                    this.controllers[controllerName] = require(`${App.APP_PATH}Http/Controllers/${controllerName}`);
                 }
+                let controller = this.controllers[controllerName];
+                controller[methodName](...args);
             }
         } catch (ex) {
             console.log(ex);
