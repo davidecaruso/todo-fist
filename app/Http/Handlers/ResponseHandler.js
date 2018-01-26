@@ -1,11 +1,18 @@
+let fs = require("fs");
 class ResponseHandler {
-    serverError (response, code, content) {
-        response.writeHead(code, {'Content-Type': 'text/plain'});
-        response.end(content);
-    }
-    renderHtml (response, content) {
-        response.writeHead(200, {'Content-Type': 'text/html'});
+    renderHtml(response, content, statusCode) {
+        response.writeHead(statusCode, {'Content-Type': 'text/html'});
         response.end(content, 'utf-8');
+    }
+
+    render(view, response, statusCode = 200) {
+        fs.readFile(`${App.VIEWS_PATH}${view}.html`, (error, content) => {
+            if (error) {
+                this.render("500", response, 500);
+            } else {
+                this.renderHtml(response, content, statusCode);
+            }
+        })
     }
 }
 

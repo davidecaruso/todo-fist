@@ -9,24 +9,34 @@ class Dispatcher {
     }
 
     dispatch(request, response) {
-        let path = request.url.split("/");
-        let [action, ...args] = path;
-        action = action || "/";
-        args = [request, response, args];
-        console.log(path);
-        console.log(request.url);
+        let path, action, args = [];
+        if (request.url.length > 1) {
+            path = request.url.split("/");
+            [action, ...args] = path;
+        } else {
+            action = "/";
+        }
+        args = [response, args];
         if (Object.keys(routes).indexOf(action) !== -1) {
+            console.log(routes[action]);
             this.get(routes[action], args)
+        } else {
+            this.get('Controller@pageNotFound', [response]);
         }
     }
 
     get(action, args) {
         try {
-            let splitted = action.split("@");
+            let [isStatic, char] = action.indexOf("::") !== -1 ? [true, "::"] : [false, "@"];
+            let splitted = action.split(char);
             if (splitted.length === 2) {
                 let [controllerName, methodName] = splitted;
-                let controller = new (require(`${App.APP_ROOT}Http/Controllers/${controllerName}`))();
-                controller[methodName](...args);
+                let controller = require(`${App.APP_PATH}Http/Controllers/${controllerName}`);
+                if (isStatic) {
+                    (controller.constructor)[methodName](...args);
+                } else {
+                    controller[methodName](...args);
+                }
             }
         } catch (ex) {
             console.log(ex);
@@ -34,4 +44,4 @@ class Dispatcher {
     }
 }
 
-module.exports = Dispatcher;
+module.exports = Object.freeze(new Dispatcher());

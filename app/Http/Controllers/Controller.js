@@ -8,6 +8,10 @@ class Controller {
         this.handler = new Handler();
         return this.instance;
     }
+
+    pageNotFound(response) {
+        this.handler.render("404", response, 404);
+    }
 }
 
-module.exports = Controller;
+module.exports = Object.freeze(new Controller());

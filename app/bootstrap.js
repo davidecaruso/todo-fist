@@ -7,16 +7,18 @@ class App {
         this.PORT = '1337';
 
         this.ROOT = `${__dirname}/../`;
-        this.APP_ROOT = `${this.ROOT}app/`;
-        this.PUBLIC_ROOT = `${this.ROOT}public/`;
+        this.APP_PATH = `${this.ROOT}app/`;
+        this.PUBLIC_PATH = `${this.ROOT}public/`;
+        this.VIEWS_PATH = `${this.APP_PATH}Views/`;
 
-        this.dispatcher = new Dispatcher(this);
+        this.dispatcher = Dispatcher;
 
         if (!this.instance) {
             this.instance = this;
         }
         return this.instance;
     }
+
     run() {
         http.createServer((request, response) => {
             try {
@@ -31,4 +33,4 @@ class App {
     }
 }
 
-module.exports = new App();
+module.exports = Object.freeze(new App());

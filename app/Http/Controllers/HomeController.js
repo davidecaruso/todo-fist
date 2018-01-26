@@ -1,15 +1,13 @@
-let fs = require("fs");
+let Controller = require("./Controller");
 
-class HomeController extends require("./Controller") {
-    index(request, response, args) {
-        fs.readFile(`${App.PUBLIC_ROOT}index.html`, (error, content) => {
-            if (error) {
-                this.handler.serverError(response, 500);
-            } else {
-                this.handler.renderHtml(response, content);
-            }
-        })
+class HomeController extends Controller.constructor {
+    constructor() {
+        super();
+    }
+
+    index(response, args) {
+        this.handler.render('Home', response);
     }
 }
 
-module.exports = HomeController;
+module.exports = Object.freeze(new HomeController());
